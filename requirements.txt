@@ -1,11 +1,11 @@
-streamlit
-tensorflow
-librosa
-numpy
-scikit-learn
-joblib
 plotly
 scipy
 pandas
 matplotlib
 seaborn
+numpy
+scikit-learn
+joblib
+streamlit
+tensorflow
+librosa
