@@ -68,12 +68,13 @@ Process to run locally:-
 git clone https://github.com/Pranav-Pedaballe/Emotion_classification.git
 cd Emotion_classification
 
-python -m venv env
-
 source env/bin/activate  # or .\env\Scripts\activate on Windows
 
 pip install -r requirements.txt
+To run the test_model.py code:-
+Add the .wav files manually and run the code from the terminal
 
+To run the app:-
 streamlit run app.py
 
 
