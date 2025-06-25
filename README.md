@@ -65,6 +65,9 @@ Accuracy of each class:-
 
 ![Screenshot 2025-06-25 190351](https://github.com/user-attachments/assets/b4b2aa14-ae2e-4519-852d-f05fa8b57ffd)
 
+
+TO test the model:-
+ 
 Process to run locally:-
 
 git clone https://github.com/Pranav-Pedaballe/Emotion_classification.git
@@ -81,7 +84,7 @@ to run on the app:-
 
 streamlit run app.py
 
-to test single audio files
+to test files
 
 python test_model.py
 
