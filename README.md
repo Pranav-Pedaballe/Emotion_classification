@@ -68,13 +68,21 @@ Accuracy of each class:-
 Process to run locally:-
 
 git clone https://github.com/Pranav-Pedaballe/Emotion_classification.git
+
 cd Emotion_classification
+
 python -m venv env
+
 source env/bin/activate or .\env\Scripts\activate 
+
 pip install -r requirements.txt
+
 to run on the app:-
+
 streamlit run app.py
+
 to test single audio files
+
 python test_model.py
 
 
