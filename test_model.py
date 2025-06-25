@@ -5,14 +5,15 @@ import pandas as pd
 import librosa
 from tensorflow.keras.models import load_model
 from sklearn.preprocessing import LabelEncoder
+import zipfile
+import tempfile
+import shutil
 
 model = load_model("final_model.h5")  
 emotion_labels = ['angry', 'calm', 'disgust', 'fearful', 'happy', 'neutral', 'sad', 'surprised']
 encoder = LabelEncoder()
 encoder.fit(emotion_labels)
-
 def extract_feature(data, sr):
-
     stft = np.abs(librosa.stft(data))
     result = np.array([])
     mfccs=librosa.feature.mfcc(y=data, sr=sr, n_mfcc=40)                          #mfcss
@@ -54,51 +55,49 @@ def extract_feature(data, sr):
     #result = np.hstack((result, contrast))
     return result
 
-
-def run_prediction(audio_path):
+def prediction(audio_path):
     try:
         y, sr = librosa.load(audio_path, duration=3, offset=0.5)  
-        feats = extract_feature(y, sr)
-
+        feats = extract_feature(y,sr)
         if feats is None:
             print(f"[INFO] Skipped {audio_path} due to feature issue.")
             return
         x_input = np.expand_dims(feats, axis=0)
         x_input = np.expand_dims(x_input, axis=2)  
-
         preds = model.predict(x_input)
         predicted_class = np.argmax(preds)
         emotion = encoder.inverse_transform([predicted_class])[0]
-
         print(f"> {audio_path} => Emotion: {emotion.upper()}")
-
     except Exception as err:
         print(f"[ERROR] Problem with file {audio_path}: {err}")
-
-def process_input_files(args_list):
+def proccess_files(args_list):
     for item in args_list:
-        if item.endswith('.csv'):
+        if item.endswith('.zip') and os.path.isfile(item):
+            try:
+                with tempfile.TemporaryDirectory() as temp_dir:
+                    with zipfile.ZipFile(item, 'r') as zip_ref:
+                        zip_ref.extractall(temp_dir)
+                    for root, _, files in os.walk(temp_dir):
+                        for f in files:
+                            if f.endswith(".wav"):
+                                file_path = os.path.join(root, f)
+                                prediction(file_path)
+            except Exception as e:
+                print(f"[ERROR] Failed to extract or process zip '{item}': {e}")
+        elif item.endswith('.csv'):
             try:
                 data = pd.read_csv(item)
-                col_name = data.columns[0]  
+                col_name = data.columns[0]
                 for idx, path in enumerate(data[col_name]):
                     if isinstance(path, str) and path.endswith('.wav') and os.path.isfile(path):
-                        run_prediction(path)
+                        prediction(path)
                     else:
                         print(f"  - Skipping line {idx + 1}: {path}")
             except Exception as e:
                 print(f"[ERROR] Failed to load CSV '{item}': {e}")
-
         elif item.endswith('.wav') and os.path.isfile(item):
-            run_prediction(item)
-
+            prediction(item)
         else:
             print(f"[ERROR] Unsupported file or path not found: {item}")
 
-if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print("Usage:\n  python test_model.py <audio.wav> [more_files.wav] OR a CSV with file paths")
-    else:
-        input_args = sys.argv[1:]
-        process_input_files(input_args)
 
