@@ -60,6 +60,7 @@ Confusion Matrix:-
 ![Screenshot 2025-06-25 185735](https://github.com/user-attachments/assets/1969f6e0-229a-48bf-a037-14155f72be33)
 
 Accuracy of each class:-
+
 ![Screenshot 2025-06-25 190351](https://github.com/user-attachments/assets/b4b2aa14-ae2e-4519-852d-f05fa8b57ffd)
 
 Process to run locally:-
