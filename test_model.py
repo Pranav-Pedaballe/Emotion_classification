@@ -1,14 +1,15 @@
+import os
+import sys
 import numpy as np
+import pandas as pd
 import librosa
 from tensorflow.keras.models import load_model
 from sklearn.preprocessing import LabelEncoder
-import sys
 
-model = load_model("final_model.h5")
-
-emotions = ['angry', 'calm', 'disgust', 'fearful', 'happy', 'neutral', 'sad', 'surprised']
-labelencoder = LabelEncoder()
-labelencoder.fit(emotions)
+model = load_model("final_model.h5")  
+emotion_labels = ['angry', 'calm', 'disgust', 'fearful', 'happy', 'neutral', 'sad', 'surprised']
+encoder = LabelEncoder()
+encoder.fit(emotion_labels)
 
 def extract_feature(data, sr):
 
@@ -53,18 +54,51 @@ def extract_feature(data, sr):
     #result = np.hstack((result, contrast))
     return result
 
-def predict_emotion(file_path):
-    data, sr = librosa.load(file_path, duration=3, offset=0.5)
-    features = extract_feature(data, sr)
-    features = np.expand_dims(features, axis=0)
-    features = np.expand_dims(features, axis=2)
-    prediction = model.predict(features)
-    predicted_label = labelencoder.inverse_transform([np.argmax(prediction)])[0]
-    print(f"[{file_path}] → Predicted Emotion: {predicted_label.upper()}")
+
+def run_prediction(audio_path):
+    try:
+        y, sr = librosa.load(audio_path, duration=3, offset=0.5)  
+        feats = extract_feature(y, sr)
+
+        if feats is None:
+            print(f"[INFO] Skipped {audio_path} due to feature issue.")
+            return
+        x_input = np.expand_dims(feats, axis=0)
+        x_input = np.expand_dims(x_input, axis=2)  
+
+        preds = model.predict(x_input)
+        predicted_class = np.argmax(preds)
+        emotion = encoder.inverse_transform([predicted_class])[0]
+
+        print(f"> {audio_path} => Emotion: {emotion.upper()}")
+
+    except Exception as err:
+        print(f"[ERROR] Problem with file {audio_path}: {err}")
+
+def process_input_files(args_list):
+    for item in args_list:
+        if item.endswith('.csv'):
+            try:
+                data = pd.read_csv(item)
+                col_name = data.columns[0]  
+                for idx, path in enumerate(data[col_name]):
+                    if isinstance(path, str) and path.endswith('.wav') and os.path.isfile(path):
+                        run_prediction(path)
+                    else:
+                        print(f"  - Skipping line {idx + 1}: {path}")
+            except Exception as e:
+                print(f"[ERROR] Failed to load CSV '{item}': {e}")
+
+        elif item.endswith('.wav') and os.path.isfile(item):
+            run_prediction(item)
+
+        else:
+            print(f"[ERROR] Unsupported file or path not found: {item}")
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print("Usage: python test_model.py <path_to_audio.wav>")
+        print("Usage:\n  python test_model.py <audio.wav> [more_files.wav] OR a CSV with file paths")
     else:
-        for file in sys.argv[1:]:
-            predict_emotion(file)
+        input_args = sys.argv[1:]
+        process_input_files(input_args)
+
