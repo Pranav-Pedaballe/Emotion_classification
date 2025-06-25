@@ -3,6 +3,17 @@ import numpy as np
 import librosa
 from tensorflow.keras.models import load_model
 from sklearn.preprocessing import LabelEncoder
+#trial
+# Patch InputLayer to ignore 'batch_shape'
+from tensorflow.keras.layers import InputLayer as OriginalInputLayer
+class PatchedInputLayer(OriginalInputLayer):
+    def __init__(self, *args, **kwargs):
+        kwargs.pop('batch_shape', None)  # Ignore if present
+        super().__init__(*args, **kwargs)
+
+from tensorflow.keras.utils import get_custom_objects
+get_custom_objects()['InputLayer'] = PatchedInputLayer
+
 #first we load the model
 model = load_model("final_model.h5")
 #do the necessary encoding
