@@ -15,7 +15,7 @@ from tensorflow.keras.utils import get_custom_objects
 get_custom_objects()['InputLayer'] = PatchedInputLayer
 
 #first we load the model
-model = load_model("final_model.h5")
+model = load_model("final_model_streamy.h5")
 #do the necessary encoding
 emotions = ['angry', 'calm', 'disgust', 'fearful', 'happy', 'neutral', 'sad', 'surprised']
 labelencoder = LabelEncoder()
