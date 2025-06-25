@@ -72,7 +72,7 @@ def prediction(audio_path):
         print(f"[ERROR] Problem with file {audio_path}: {err}")
 def proccess_files(args_list):
     for item in args_list:
-        if item.endswith('.zip') and os.path.isfile(item):
+        if item.endswith('.zip') and os.path.isfile(item):                            #zip folder containing multiple .wav files
             try:
                 with tempfile.TemporaryDirectory() as temp_dir:
                     with zipfile.ZipFile(item, 'r') as zip_ref:
@@ -84,7 +84,7 @@ def proccess_files(args_list):
                                 prediction(file_path)
             except Exception as e:
                 print(f"[ERROR] Failed to extract or process zip '{item}': {e}")
-        elif item.endswith('.csv'):
+        elif item.endswith('.csv'):                                                 #.csv file containing the file paths of .wav files
             try:
                 data = pd.read_csv(item)
                 col_name = data.columns[0]
@@ -95,7 +95,7 @@ def proccess_files(args_list):
                         print(f"  - Skipping line {idx + 1}: {path}")
             except Exception as e:
                 print(f"[ERROR] Failed to load CSV '{item}': {e}")
-        elif item.endswith('.wav') and os.path.isfile(item):
+        elif item.endswith('.wav') and os.path.isfile(item):                        #individual .wav files
             prediction(item)
         else:
             print(f"[ERROR] Unsupported file or path not found: {item}")
