@@ -2,7 +2,7 @@
 Link for the app:- https://emotionclassification-9tkwdaauqykmyagrvxvdsn.streamlit.app/
 
 This objective of this project is to design and implement an end-to-end pipeline for emotion classification using speech data.
-The model was trained on the Ravdess dataset for speech and song of different actors.
+The model was trained on the RAVDESS dataset which includes speech and song recordings of different actors.
 
 There are 8 emotions which include :- **Angry,Calm, Disgust,Fearful,Happy,Neutral,Sad and Surprised** 
 
@@ -69,15 +69,15 @@ Process to run locally:-
 
 git clone https://github.com/Pranav-Pedaballe/Emotion_classification.git
 cd Emotion_classification
-
-source env/bin/activate  # or .\env\Scripts\activate on Windows
-
+python -m venv env
+source env/bin/activate or .\env\Scripts\activate 
 pip install -r requirements.txt
-To run the test_model.py code:-
-Add the .wav files manually and run the code from the terminal
-
-To run the app:-
+to run on the app:-
 streamlit run app.py
+to test single audio files
+python test_model.py
+
+
 
 
 
