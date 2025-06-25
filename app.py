@@ -4,7 +4,7 @@ import librosa
 from tensorflow.keras.models import load_model
 from sklearn.preprocessing import LabelEncoder
 #first we load the model
-model = load_model("final_model_stream.h5")
+model = load_model("final_model.h5")
 #do the necessary encoding
 emotions = ['angry', 'calm', 'disgust', 'fearful', 'happy', 'neutral', 'sad', 'surprised']
 labelencoder = LabelEncoder()
