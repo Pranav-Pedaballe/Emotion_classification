@@ -85,8 +85,11 @@ to run on the app:-
 streamlit run app.py
 
 to test files
+Add a csv containing multiple .wav file paths
+or add .wav files directly
 
 python test_model.py
+
 
 
 
