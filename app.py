@@ -13,7 +13,11 @@ class PatchedInputLayer(OriginalInputLayer):
 
 from tensorflow.keras.utils import get_custom_objects
 get_custom_objects()['InputLayer'] = PatchedInputLayer
+class DTypePolicy:
+    def __init__(self, name):
+        self.name = name
 
+get_custom_objects()["DTypePolicy"] = DTypePolicy
 #first we load the model
 model = load_model("final_model_streamy.h5")
 #do the necessary encoding
