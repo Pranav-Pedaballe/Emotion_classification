@@ -1,4 +1,6 @@
 # Emotion_classification
+Link for the app:- https://emotionclassification-9tkwdaauqykmyagrvxvdsn.streamlit.app/
+
 This objective of this project is to design and implement an end-to-end pipeline for emotion classification using speech data.
 The model was trained on the Ravdess dataset for speech and song of different actors.
 
