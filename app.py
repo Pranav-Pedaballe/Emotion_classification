@@ -5,7 +5,7 @@ from tensorflow.keras.models import load_model
 from sklearn.preprocessing import LabelEncoder
 
 # Load model
-model = load_model("final_model_resaved(1).keras")
+model = load_model("final_model_saved.keras")
 
 # Prepare label encoder (same order as training)
 emotions = ['angry', 'calm', 'disgust', 'fearful', 'happy', 'neutral', 'sad', 'surprised']
