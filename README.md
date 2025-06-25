@@ -43,5 +43,38 @@ optim=Adam(learning_rate=0.001)
 The model was then trained for a maximum of 100 epochs with early stopping.
 
 ##Results
+![Screenshot 2025-06-25 185709](https://github.com/user-attachments/assets/f62ec8eb-5703-4892-ac98-c3a1e56158c3)
+
+Overall Accuracy:- 87%
+F1 score:- 
+ - angry 0.88
+ - calm 0.94
+ - disgust 0.84
+ - fearful 0.84
+ - happy 0.89
+ - neutral 0.82
+ - sad 0.84
+ - surprised 0.84
+
+Confusion Matrix:-
+![Screenshot 2025-06-25 185735](https://github.com/user-attachments/assets/1969f6e0-229a-48bf-a037-14155f72be33)
+
+Accuracy of each class:-
+![Screenshot 2025-06-25 190351](https://github.com/user-attachments/assets/b4b2aa14-ae2e-4519-852d-f05fa8b57ffd)
+
+Process to run locally:-
+
+git clone https://github.com/Pranav-Pedaballe/Emotion_classification.git
+cd Emotion_classification
+python -m venv env
+source env/bin/activate  # or .\env\Scripts\activate on Windows
+pip install -r requirements.txt
+streamlit run app.py
+
+
+
+
+ 
+
 
 
